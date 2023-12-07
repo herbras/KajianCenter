@@ -95,3 +95,11 @@ function getPemateriById(pemateriId) {
     }
     return null; 
   }
+
+  function safeGetSheetByName(name) {
+    var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(name);
+    if (!sheet) {
+      throw new Error('Sheet with name "' + name + '" not found.');
+    }
+    return sheet;
+  }
