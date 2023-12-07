@@ -59,3 +59,39 @@ function getKajianData(sheet) {
         return kajian;
     });
 }
+
+function getPemateriById(pemateriId) {
+    var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Pemateri");
+    var rows = sheet.getDataRange().getValues();
+    var headers = rows.shift();
+  
+    for (var i = 0; i < rows.length; i++) {
+      var row = rows[i];
+      if (String(row[0]) === String(pemateriId)) {
+        var pemateri = {};
+        headers.forEach(function(header, index) {
+          pemateri[header] = row[index];
+        });
+        return pemateri;
+      }
+    }
+    return null; 
+  }
+  
+  function getContactPersonById(contactPersonId) {
+    var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Contact Person");
+    var rows = sheet.getDataRange().getValues();
+    var headers = rows.shift();
+  
+    for (var i = 0; i < rows.length; i++) {
+      var row = rows[i];
+      if (String(row[0]) === String(contactPersonId)) {
+        var contactPerson = {};
+        headers.forEach(function(header, index) {
+          contactPerson[header] = row[index];
+        });
+        return contactPerson;
+      }
+    }
+    return null; 
+  }
