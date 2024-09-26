@@ -6,8 +6,8 @@
     allKategoriIlmu,
     kajians,
     allJenisStatus,
-  } from "../database/fixdb.json";
-  import { kajianStore, filterStore } from "./store.js";
+  } from "src/data/kajianData";
+  import { kajianStore, filterStore } from "../store.js";
 
   const dispatch = createEventDispatcher();
 
@@ -61,7 +61,7 @@
   }
 </script>
 
-<div class="flex flex-col gap-4">
+<div class="flex gap-4">
   <select
     bind:value={$filterStore.jenisKajian}
     on:change={handleFilterChange}

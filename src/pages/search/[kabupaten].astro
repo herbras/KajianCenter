@@ -1,0 +1,355 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import { kajians } from "src/data/kajianData";
+import { formatDate, formatTime, formatDateTime } from "@utils/dateUtils";
+const itemsPerPage = 6;
+const totalItems = kajians.length;
+const totalPages = Math.ceil(totalItems / itemsPerPage);
+// Mengambil parameter rute dinamis dari URL
+const url = new URL(Astro.request.url);
+const statusOptionsQueryParam = url.searchParams.get("statusOptions");
+const kabupatenQueryParam = url.searchParams.get("kabupaten");
+const jenisKajianQueryParam = url.searchParams.get("jenisKajian");
+const kategoriIlmuQueryParam = url.searchParams.get("kategoriIlmu");
+const currentPage = parseInt(url.searchParams.get("page") || "1", 10);
+
+// Filter kajian berdasarkan parameter yang diberikan
+const startIndex = (currentPage - 1) * itemsPerPage;
+const endIndex = startIndex + itemsPerPage;
+const filteredAndPaginatedKajians = kajians.filter((kajian, index) => {
+    return (
+        index >= startIndex &&
+        index < endIndex &&
+        (!kabupatenQueryParam ||
+            kajian.alamat?.kabupaten === kabupatenQueryParam) &&
+        (!jenisKajianQueryParam ||
+            kajian.jenisKajian === jenisKajianQueryParam) &&
+        (!kategoriIlmuQueryParam ||
+            (kajian.kategoriIlmu &&
+                kajian.kategoriIlmu.includes(kategoriIlmuQueryParam))) &&
+        (!statusOptionsQueryParam ||
+            kajian.statusBiaya === statusOptionsQueryParam) // Tambahkan logika pengecekan status di sini
+    );
+});
+
+import Suprise from "@components/404.astro";
+let searchTitle = "Kajian";
+if (kabupatenQueryParam) {
+    searchTitle += ` di Kabupaten ${kabupatenQueryParam}`;
+}
+if (jenisKajianQueryParam) {
+    searchTitle += ` Jenis ${jenisKajianQueryParam}`;
+}
+if (kategoriIlmuQueryParam) {
+    searchTitle += ` Kategori ${kategoriIlmuQueryParam}`;
+}
+if (statusOptionsQueryParam) {
+    searchTitle += ` Kategori ${statusOptionsQueryParam}`;
+}
+// Jika menggunakan AJAX request untuk update konten
+const isAjaxRequest = Astro.request.headers.get("hx-request");
+Astro.response.headers.set("X-New-Title", searchTitle);
+Astro.response.headers.set(
+    "X-New-Description",
+    `Page ini tentang ${searchTitle}`,
+);
+
+function buildPaginationUrl(page) {
+    let url = `/search/search?page=${page}`;
+    // tambahkan parameter pencarian lainnya
+    if (kabupatenQueryParam) url += `&kabupaten=${kabupatenQueryParam}`;
+    if (jenisKajianQueryParam) url += `&jenisKajian=${jenisKajianQueryParam}`;
+    if (kategoriIlmuQueryParam)
+        url += `&kategoriIlmu=${kategoriIlmuQueryParam}`;
+    if (statusOptionsQueryParam)
+        url += `&statusOptions=${statusOptionsQueryParam}`;
+    // tambahkan parameter lainnya jika ada
+    return url;
+}
+console.log(filteredAndPaginatedKajians);
+---
+
+{
+    isAjaxRequest ? (
+        // Render only the search results for AJAX requests
+        filteredAndPaginatedKajians.length > 0 ? (
+            <>
+                <div id="paginatedItems">
+                    <div
+                        id="posterKajian"
+                        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+                    >
+                        {filteredAndPaginatedKajians.map((kajian) => (
+                            <article class="relative overflow-hidden rounded-lg shadow transition hover:shadow-lg">
+                                <img
+                                    src={
+                                        kajian.gambarKajian ||
+                                        "https://pbs.twimg.com/media/GBRTGrpaAAAgmD2?format=jpg&name=large"
+                                    }
+                                    alt={`Poster Kajian ${kajian.judul}`}
+                                    class="absolute inset-0 h-full w-full object-cover"
+                                />
+
+                                <div class="relative bg-gradient-to-t h-full from-gray-900/50 to-gray-900/25 pt-32 sm:pt-48 lg:pt-64">
+                                    <div class="p-4 sm:p-6">
+                                        <label class="flex-inline">
+                                            <div class="i-fluent-emoji-sun w-5 h-5 text-black" />
+                                            <span class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blue-600 bg-blue-200 last:mr-0 mr-1">
+                                                {kajian.jenisKajian}
+                                            </span>
+
+                                            {kajian.kategoriIlmu.map(
+                                                (kategori) => (
+                                                    <label class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blue-600 bg-blue-200 last:mr-0 mr-1">
+                                                        #{kategori}
+                                                    </label>
+                                                ),
+                                            )}
+                                        </label>
+
+                                        <a
+                                            href={`/${kajian.slug}`}
+                                            hx-get={`/${kajian.slug}`}
+                                            hx-target="#tempat"
+                                            hx-swap="innerHTML"
+                                            hx-push-url={`/${kajian.slug}`}
+                                        >
+                                            <h3 class="mt-0.5 text-4xl text-white">
+                                                {kajian.judul}
+                                            </h3>
+                                        </a>
+
+                                        <div class="i-fluent-emoji-mosque h-5 w-5" />
+                                        <div class="text-sm">
+                                            <p class="m-0 p-0 text-gray-100">
+                                                {kajian.tempat}
+                                            </p>
+
+                                            <p class="m-0 p-0 text-gray-200">
+                                                {kajian.alamat.kabupaten} ,{" "}
+                                                {kajian.alamat.provinsi}
+                                            </p>
+                                        </div>
+                                        <slot name="time" />
+
+                                        <time
+                                            class="block text-xs text-white"
+                                            datetime={formatDateTime(
+                                                kajian.hariJadwal,
+                                            )}
+                                        >
+                                            <span class="text-white">
+                                                {formatDate(kajian.hariJadwal)}
+                                            </span>
+                                            <span class="text-white">
+                                                @{" "}
+                                                {formatTime(kajian.hariJadwal)}
+                                            </span>
+                                        </time>
+                                    </div>
+                                </div>
+                            </article>
+                        ))}
+                    </div><div id="paginationControls" class="flex pt-8 items-center gap-4">
+    {currentPage > 1 && (
+        <a
+            class="flex decoration-none  items-center gap-2 px-6 py-3 font-sans text-xs font-bold text-center text-gray-900 uppercase align-middle transition-all rounded-lg select-none hover:bg-gray-900/10 active:bg-gray-900/20"
+            hx-get={buildPaginationUrl(currentPage - 1)}
+            hx-target="#paginatedItems"
+            hx-swap="innerHTML"
+            hx-push-url="true"
+            href={buildPaginationUrl(currentPage - 1)}
+        >
+            <!-- SVG for Previous -->
+            Previous
+        </a>
+    )}
+
+    {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+        (page) => (
+            <a
+                class={`relative h-10 max-h-[40px] w-10 max-w-[40px] select-none rounded-lg text-center align-middle font-sans text-xs font-medium uppercase transition-all ${currentPage === page ? 'bg-gray-900 text-white' : 'text-gray-900 hover:bg-gray-900/10 active:bg-gray-900/20'}`}
+                hx-get={buildPaginationUrl(page)}
+                hx-target="#paginatedItems"
+                hx-swap="innerHTML"
+                hx-push-url="true"
+                href={buildPaginationUrl(page)}
+            >
+                <span class="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+                    {page}
+                </span>
+            </a>
+        ),
+    )}
+
+    {currentPage < totalPages && (
+        <a
+            class="flex decoration-none  items-center gap-2 px-6 py-3 font-sans text-xs font-bold text-center text-gray-900 uppercase align-middle transition-all rounded-lg select-none hover:bg-gray-900/10 active:bg-gray-900/20"
+            hx-get={buildPaginationUrl(currentPage + 1)}
+            hx-target="#paginatedItems"
+            hx-swap="innerHTML"
+            hx-push-url="true"
+            href={buildPaginationUrl(currentPage + 1)}
+        >
+            Next
+            <!-- SVG for Next -->
+        </a>
+    )}
+</div>
+
+                </div>
+                
+            </>
+        ) : (
+            <Suprise />
+        )
+    ) : (
+        // Render the full layout with search results for non-AJAX requests
+        <BaseLayout
+            desc={`Page ini tentang ${searchTitle}`}
+            title={searchTitle}
+        >
+            <div id="paginatedItems">
+                {filteredAndPaginatedKajians.length > 0 ? (
+                    <div
+                        id="posterKajian"
+                        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+                    >
+                        {filteredAndPaginatedKajians.length > 0 ? (
+                            filteredAndPaginatedKajians.map((kajian) => (
+                                <article class="relative overflow-hidden rounded-lg shadow transition hover:shadow-lg">
+                                    <img
+                                        src={
+                                            kajian.gambarKajian ||
+                                            "https://pbs.twimg.com/media/GBRTGrpaAAAgmD2?format=jpg&name=large"
+                                        }
+                                        alt={`Poster Kajian ${kajian.judul}`}
+                                        class="absolute inset-0 h-full w-full object-cover"
+                                    />
+
+                                    <div class="relative bg-gradient-to-t h-full from-gray-900/50 to-gray-900/25 pt-32 sm:pt-48 lg:pt-64">
+                                        <div class="p-4 sm:p-6">
+                                            <label class="flex-inline">
+                                                <div class="i-fluent-emoji-sun w-5 h-5 text-black" />
+                                                <span class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blue-600 bg-blue-200 last:mr-0 mr-1">
+                                                    {kajian.jenisKajian}
+                                                </span>
+
+                                                {kajian.kategoriIlmu.map(
+                                                    (kategori) => (
+                                                        <label class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blue-600 bg-blue-200 last:mr-0 mr-1">
+                                                            #{kategori}
+                                                        </label>
+                                                    ),
+                                                )}
+                                            </label>
+
+                                            <a
+                                                href={`/${kajian.slug}`}
+                                                hx-get={`/${kajian.slug}`}
+                                                hx-target="#tempat"
+                                                hx-swap="innerHTML"
+                                                hx-push-url={`/${kajian.slug}`}
+                                            >
+                                                <h3 class="mt-0.5 text-4xl text-white">
+                                                    {kajian.judul}
+                                                </h3>
+                                            </a>
+
+                                            <div class="i-fluent-emoji-mosque h-5 w-5" />
+                                            <div class="text-sm">
+                                                <p class="m-0 p-0 text-gray-100">
+                                                    {kajian.tempat}
+                                                </p>
+
+                                                <p class="m-0 p-0 text-gray-200">
+                                                    {kajian.alamat.kabupaten} ,{" "}
+                                                    {kajian.alamat.provinsi}
+                                                </p>
+                                            </div>
+                                            <slot name="time" />
+
+                                            <time
+                                                class="block text-xs text-white"
+                                                datetime={formatDateTime(
+                                                    kajian.hariJadwal,
+                                                )}
+                                            >
+                                                <span class="text-white">
+                                                    {formatDate(
+                                                        kajian.hariJadwal,
+                                                    )}
+                                                </span>
+                                                <span class="text-white">
+                                                    @{" "}
+                                                    {formatTime(
+                                                        kajian.hariJadwal,
+                                                    )}
+                                                </span>
+                                            </time>
+                                        </div>
+                                    </div>
+                                </article>
+                            ))
+                        ) : (
+                            <p>
+                                404 Maaf, kami belum mendapatkan kajian di
+                                daerah Anda.
+                            </p>
+                        )}
+                        <div id="paginationControls" class="flex pt-8 items-center gap-4">
+    {currentPage > 1 && (
+        <a
+            class="flex decoration-none items-center gap-2 px-6 py-3 font-sans text-xs font-bold text-center text-gray-900 uppercase align-middle transition-all rounded-lg select-none hover:bg-gray-900/10 active:bg-gray-900/20"
+            hx-get={buildPaginationUrl(currentPage - 1)}
+            hx-target="#paginatedItems"
+            hx-swap="innerHTML"
+            hx-push-url="true"
+            href={buildPaginationUrl(currentPage - 1)}
+        >
+            <!-- SVG for Previous -->
+            Previous
+        </a>
+    )}
+
+    {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+        (page) => (
+            <a
+                class={`relative h-10 max-h-[40px] w-10 max-w-[40px] select-none rounded-lg text-center align-middle font-sans text-xs font-medium uppercase transition-all ${currentPage === page ? 'bg-gray-900 text-white' : 'text-gray-900 hover:bg-gray-900/10 active:bg-gray-900/20'}`}
+                hx-get={buildPaginationUrl(page)}
+                hx-target="#paginatedItems"
+                hx-swap="innerHTML"
+                hx-push-url="true"
+                href={buildPaginationUrl(page)}
+            >
+                <span class="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+                    {page}
+                </span>
+            </a>
+        ),
+    )}
+
+    {currentPage < totalPages && (
+        <a
+            class="flex decoration-none  items-center gap-2 px-6 py-3 font-sans text-xs font-bold text-center text-gray-900 uppercase align-middle transition-all rounded-lg select-none hover:bg-gray-900/10 active:bg-gray-900/20"
+            hx-get={buildPaginationUrl(currentPage + 1)}
+            hx-target="#paginatedItems"
+            hx-swap="innerHTML"
+            hx-push-url="true"
+            href={buildPaginationUrl(currentPage + 1)}
+        >
+            Next
+            <!-- SVG for Next -->
+        </a>
+    )}
+</div>
+                    </div>
+                ) : (
+                    <Suprise />
+                )}  
+
+            </div>{" "}
+          
+        </BaseLayout>
+    )
+}

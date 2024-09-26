@@ -11,3 +11,4 @@ export const filterStore = writable({
   status: '',
   kabupaten: ''
 });
+

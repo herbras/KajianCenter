@@ -1,0 +1,33 @@
+---
+import Detail from "@components/Detail.astro";
+import BaseLayout from "@layouts/BaseLayout.astro";
+
+import Suprise from "@components/404.astro";
+import { kajians } from "src/data/kajianData";
+
+const { kajianSlug } = Astro.params;
+const entry = kajians.find((kajian) => kajian.slug === kajianSlug);
+
+Astro.response.headers.set("X-New-Title", entry.judul);
+Astro.response.headers.set("X-New-Description", entry.deskripsi);
+
+const isAjaxRequest = Astro.request.headers.get("hx-request");
+---
+
+{
+  isAjaxRequest ? (
+    entry ? (
+      <Detail kajian={entry} />
+    ) : (
+      <Suprise />
+    )
+  ) : entry ? (
+    <BaseLayout desc={entry.deskripsi} title={entry.judul}>
+      <Detail kajian={entry} />
+    </BaseLayout>
+  ) : (
+    <BaseLayout title="404 page">
+      <Suprise />
+    </BaseLayout>
+  )
+}

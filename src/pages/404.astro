@@ -1,0 +1,17 @@
+---
+import Suprise from "@components/404.astro";
+import BaseLayout from "@layouts/BaseLayout.astro";
+const isAjaxRequest = Astro.request.headers.get("hx-request");
+---
+
+{
+    isAjaxRequest ? (
+        <Suprise />
+    ) : (
+        <>
+            <BaseLayout>
+                <Suprise />
+            </BaseLayout>
+        </>
+    )
+}
