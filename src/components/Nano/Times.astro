@@ -1,45 +1,47 @@
 ---
 const { hariJadwal } = Astro.props;
-import moment from "moment";
+import { format, parseISO } from "date-fns";
+import { id } from "date-fns/locale";
+
+function replaceMingguwithAhad(dateString: string) {
+  return dateString.replace("Minggu", "Ahad");
+}
+
+const formattedDate = replaceMingguwithAhad(
+  format(parseISO(hariJadwal), "eeee, dd-MMMM-yyyy", { locale: id })
+);
+const formattedTime = format(parseISO(hariJadwal), "hh:mm aa");
 ---
 
 <div
-    class="rounded-lg flex flex-wrap items-center border border-blue-500 shadow-lg overflow-hidden"
+  class="rounded-lg flex flex-wrap items-center border border-blue-500 shadow-lg overflow-hidden"
 >
-    <div class="p-4 flex-grow">
-        <div class="flex items-center">
-            <div
-                class="h-8 w-8 bg-blue-100 text-blue-500 rounded-full flex justify-center items-center"
-            >
-                <div class="h-5 w-5 i-fluent-emoji-calendar"></div>
-            </div>
-            <h3 class="text-lg font-semibold text-gray-800 ml-2">
-                Upcoming Date
-            </h3>
+  <div class="p-4 flex-grow">
+    <div class="flex items-center">
+      <div
+        class="h-8 w-8 bg-blue-100 text-blue-500 rounded-full flex justify-center items-center"
+      >
+        <div class="h-5 w-5 i-fluent-emoji-calendar"></div>
+      </div>
+      <h3 class="text-lg font-semibold text-gray-800 ml-2">Upcoming Date</h3>
+    </div>
+
+    <div class="rounded-lg border border-blue-500 shadow-lg overflow-hidden">
+      <div class="flex flex-wrap justify-between p-4 bg-gray-800 rounded-lg">
+        <div class="flex flex-col space-y-2">
+          <p class="text-2xl font-semibold text-white" id="hariJadwal">
+            {formattedDate}
+          </p>
+
+          <p class="text-xl text-white" id="hariJadwalTime">
+            {formattedTime}
+          </p>
         </div>
 
-        <div class="rounded-lg border border-blue-500 shadow-lg overflow-hidden">
-            <div class="flex flex-wrap justify-between p-4 bg-gray-800 rounded-lg">
-                <div class="flex flex-col space-y-2">
-                    <p class="text-2xl font-semibold text-white" id="hariJadwal">
-                        {
-                            moment(hariJadwal)
-                                .locale("id")
-                                .format("dddd, DD-MMMM-YYYY")
-                                .replace("Minggu", "Ahad")
-                        }
-                    </p>
-        
-                    <p class="text-xl text-white" id="hariJadwalTime">
-                        {moment(hariJadwal).format("hh:mm A")}
-                    </p>
-                </div>
-        
-                <div class="pt-1">
-                    <slot name="saveEvent" />
-                </div>
-            </div>
+        <div class="pt-1">
+          <slot name="saveEvent" />
         </div>
-        
+      </div>
     </div>
+  </div>
 </div>
