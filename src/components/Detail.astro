@@ -43,11 +43,11 @@ let pemateri = {
         {
           kajian.kategoriIlmu.map((kategori) => (
             <a
-              href={`/search/search?kategoriIlmu=${kategori}`}
-              hx-get={`/search/search?kategoriIlmu=${kategori}`}
+              href={`/search?kategoriIlmu=${kategori}`}
+              hx-get={`/search?kategoriIlmu=${kategori}`}
               hx-target="#tempat"
               hx-swap="innerHTML"
-              hx-push-url={`/search/search?kategoriIlmu=${kategori}`}
+              hx-push-url={`/search?kategoriIlmu=${kategori}`}
               class="text-xs font-semibold inline-block decoration-none py-1 px-2 uppercase rounded-full text-gray-800 bg-blue-200 last:mr-0 mr-1"
             >
               #{kategori}
@@ -55,11 +55,11 @@ let pemateri = {
           ))
         }
         <a
-          href={`/search/search?jenisKajian=${kajian.jenisKajian}`}
-          hx-get={`/search/search?jenisKajian=${kajian.jenisKajian}`}
+          href={`/search?jenisKajian=${kajian.jenisKajian}`}
+          hx-get={`/search?jenisKajian=${kajian.jenisKajian}`}
           hx-target="#tempat"
           hx-swap="innerHTML"
-          hx-push-url={`/search/search?jenisKajian=${kajian.jenisKajian}`}
+          hx-push-url={`/search?jenisKajian=${kajian.jenisKajian}`}
           class="text-xs font-semibold inline-block decoration-none py-1 px-2 uppercase rounded-full text-gray-800 bg-blue-200 last:mr-0 mr-1"
         >
           #{kajian.jenisKajian}

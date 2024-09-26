@@ -55,7 +55,7 @@ Astro.response.headers.set(
 );
 
 function buildPaginationUrl(page) {
-    let url = `/search/search?page=${page}`;
+    let url = `/search?page=${page}`;
     // tambahkan parameter pencarian lainnya
     if (kabupatenQueryParam) url += `&kabupaten=${kabupatenQueryParam}`;
     if (jenisKajianQueryParam) url += `&jenisKajian=${jenisKajianQueryParam}`;
@@ -108,11 +108,11 @@ console.log(filteredAndPaginatedKajians);
                                         </label>
 
                                         <a
-                                            href={`/${kajian.slug}`}
-                                            hx-get={`/${kajian.slug}`}
+                                            href={`/kajian/${kajian.slug}`}
+                                            hx-get={`/kajian/${kajian.slug}`}
                                             hx-target="#tempat"
                                             hx-swap="innerHTML"
-                                            hx-push-url={`/${kajian.slug}`}
+                                            hx-push-url={`/kajian/${kajian.slug}`}
                                         >
                                             <h3 class="mt-0.5 text-4xl text-white">
                                                 {kajian.judul}
@@ -245,8 +245,8 @@ console.log(filteredAndPaginatedKajians);
                                             </label>
 
                                             <a
-                                                href={`/${kajian.slug}`}
-                                                hx-get={`/${kajian.slug}`}
+                                                href={`/kajian/${kajian.slug}`}
+                                                hx-get={`/kajian/${kajian.slug}`}
                                                 hx-target="#tempat"
                                                 hx-swap="innerHTML"
                                                 hx-push-url={`/${kajian.slug}`}

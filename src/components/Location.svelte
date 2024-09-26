@@ -34,7 +34,7 @@
 
   function handleFilterChange() {
     const queryString = createQueryString();
-    window.history.pushState({}, "", `/search/search?${queryString}`);
+    window.history.pushState({}, "", `/search?${queryString}`);
   }
 
   let location = null;
@@ -67,9 +67,9 @@
 <div class=" flex gap-2 mx-auto pt-4">
   {#if location}
     <a
-      href={`/search/search?kabupaten=${location.location}`}
-      hx-get={`/search/search?kabupaten=${location.location}`}
-      hx-push-url={`/search/search?kabupaten=${location.location}`}
+      href={`/search?kabupaten=${location.location}`}
+      hx-get={`/search?kabupaten=${location.location}`}
+      hx-push-url={`/search?kabupaten=${location.location}`}
       hx-target="#tempat"
       hx-swap="innerHTML"
       class="border decoration-none text-base tracking-tight border-blue-200 inline-flex justify-between items-center py-2 px-3 text-gray-700 bg-gray-100 rounded-full dark:bg-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 font-medium px-2.5 py-0.5 cursor-pointer bg-blue-100 text-blue-800 dark:bg-gray-700 dark:text-blue-400 font-medium rounded mb-2"
@@ -111,11 +111,11 @@
   {/if}
   {#each allKabupaten as kabupaten}
     <a
-      href={`/search/search?kabupaten=${kabupaten}`}
-      hx-get={`/search/search?kabupaten=${kabupaten}`}
+      href={`/search?kabupaten=${kabupaten}`}
+      hx-get={`/search?kabupaten=${kabupaten}`}
       hx-target="#tempat"
       hx-swap="innerHTML"
-      hx-push-url={`/search/search?kabupaten=${kabupaten}`}
+      hx-push-url={`/search?kabupaten=${kabupaten}`}
       on:click={() => setKabupatenFilter(kabupaten)}
       class="border decoration-none text-base tracking-tight border-blue-200 inline-flex justify-between items-center py-2 px-3 text-gray-700 bg-gray-100 rounded-full dark:bg-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 font-medium px-2.5 py-0.5 cursor-pointer bg-blue-100 text-blue-800 dark:bg-gray-700 dark:text-blue-400 font-medium rounded mb-2"
     >
