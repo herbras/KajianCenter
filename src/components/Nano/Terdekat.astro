@@ -1,0 +1,60 @@
+---
+const { lokasi } = Astro.props;
+import { kajians } from "src/data/kajianData";
+const filteredKajians = kajians
+    .filter((kajian) => kajian.alamat?.kabupaten === lokasi)
+    .slice(0, 4);
+---
+
+<section>
+    <div class="mx-auto max-w-screen-2xl px-4 pt-12">
+        <header>
+            <h2 class="text-md font-thin text-gray-900 sm:text-3xl">
+                Temukan kekayaan ilmu dan hikmah dalam setiap kajian agama yang
+                tersedia di wilayah Anda.
+            </h2>
+        </header>
+    </div>
+
+    {
+        filteredKajians.length > 0 ? (
+            <ul class="mt-8 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+                {kajians
+                    .filter((kajian) => kajian.alamat?.kabupaten == lokasi)
+                    .map((kajian) => (
+                        <a
+                            href="#"
+                            class="block rounded-lg p-4 shadow-sm shadow-gray-600"
+                        >
+                            <img
+                                src={
+                                    kajian.gambarKajian ||
+                                    "https://pbs.twimg.com/media/GBRTGrpaAAAgmD2?format=jpg&name=large"
+                                }
+                                alt={`Poster Kajian ${kajian.judul}`}
+                                class="h-56 w-full rounded-md object-cover"
+                            />
+                            <h3 class="mt-0.5 text-xl text-black">
+                                {kajian.judul}
+                            </h3>
+
+                            <div class="text-sm flex flex-col gap-5">
+                                <p class="m-0 p-0 text-gray-800">
+                                    bersama Ustadz {kajian.pemateri.nama}
+                                </p>
+                                <p class="m-0 p-0 text-gray-700">
+                                    {kajian.tempat}
+                                </p>
+                            </div>
+                        </a>
+                    ))}
+            </ul>
+        ) : (
+            <div class="text-center">
+                <p class="text-lg text-gray-600">
+                    Maaf, kami belum menemukan kajian di sekitar Anda.
+                </p>
+            </div>
+        )
+    }
+</section>

@@ -1,0 +1,22 @@
+---
+    import moment from "moment";
+const {kajian} = Astro.props
+---
+
+<time
+class="block text-xs text-white"
+datetime={moment(kajian.hariJadwal).format(
+    "YYYY-MM-DDTHH:mm:ss",
+)}
+>
+<span class="text-white"
+    >{moment(kajian.hariJadwal).format(
+        "YYYY-MM-DD",
+    )}</span
+>
+<span class="text-white"
+    >@ {moment(kajian.hariJadwal).format(
+        "hh:mm A",
+    )}</span
+>
+</time>

@@ -1,0 +1,19 @@
+---
+const {kabupaten, kajians} = Astro.props;
+---
+<div class="kajian-wilayah-container">
+    <h2 class="kajian-wilayah-title">Kajian di Kabupaten {kabupaten}</h2>
+    <div class="kajian-list">
+      {kajians.filter(kajian => kajian.alamat.kabupaten === kabupaten).map(filteredKajian => (
+        <div class="kajian-item">
+          <h3 class="kajian-title">{filteredKajian.judul}</h3>
+          <p class="kajian-tempat">{filteredKajian.tempat}</p>
+          <p class="kajian-deskripsi">{filteredKajian.deskripsi}</p>
+          <a href={filteredKajian.linkGoogleMaps} target="_blank" rel="noopener noreferrer" class="kajian-maps-link">
+            Lihat Lokasi
+          </a>
+        </div>
+      ))}
+    </div>
+    <button class="view-all-button">Lihat Semua Kajian</button>
+  </div>

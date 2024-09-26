@@ -1,0 +1,37 @@
+---
+const { nama, telepon, email } = Astro.props;
+---
+
+<div
+  class="rounded-lg flex flex-wrap items-center border border-blue-500 shadow-lg overflow-hidden"
+>
+  <div class="p-4 flex-grow">
+    <div class="flex items-center">
+     
+      <h3 class="text-lg font-semibold text-gray-800 ml-2">Chat dengan Kami</h3>
+    </div>
+    <div class="flex items-center gap-4">
+      <div class="rounded-12 w-10 h-10 relative overflow-hidden">
+        <div
+          class="i-tabler-user h-8 w-8 absolute block inset-0 m-auto object-cover"
+        >
+        </div>
+      </div>
+     
+
+      <div class="font-medium dark:text-white">
+        <div>{nama}</div>
+
+        <a
+          href={`https://wa.me/62${telepon}`}
+          class="flex decoration-none items-center justify-center px-3 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-green-300"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <div class="i-tabler-brand-whatsapp h-5 w-5"></div>
+         {`62${telepon}`}
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

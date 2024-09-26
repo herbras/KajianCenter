@@ -12,7 +12,13 @@
         "src/assets/*"
       ],
       "@layouts/*": [
-        "src/layouts/*"
+        "src/Layouts/*"
+      ],
+      "@db/*": [
+        "src/database/*"
+      ],
+      "@utils/*": [
+        "src/utils/*"
       ]
     }
   }

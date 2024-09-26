@@ -1,0 +1,37 @@
+---
+
+const {pemateri} = Astro.props;
+---
+<div class="flex flex-col border border-theme-divider-tertiary rounded-16">
+    <h3>Pembicara</h3>
+    <div class="flex relative flex-row p-3">
+        <a
+            class="flex items-center no-underline"
+            href=""
+            aria-expanded="false"
+            ><a
+                class="flex items-center no-underline"
+                href=""
+                ><div
+                    class="rounded-12  w-10 h-10 relative overflow-hidden"
+                >
+                  
+                    <div
+                        class="i-tabler-user h-8 w-8 absolute block inset-0  m-auto object-cover"
+                    />
+                    
+                </div></a
+            ></a
+        >
+        <div class="w-5 h-5 bg-blue-800 pointer-events-none absolute w-5 h-5 top-10 left-10 i-tabler-microphone" />
+       <div class="flex flex-col ml-4" aria-expanded="false">
+        <a
+        class="mt-0.5 typo-footnote text-theme-label-tertiary flex items-center no-underline"
+        href="">Ustadz</a
+    > <a
+                class="font-bold typo-callout flex items-center no-underline"
+                href="">{pemateri.nama}</a
+            >
+        </div>
+    </div>
+</div>

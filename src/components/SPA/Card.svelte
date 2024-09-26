@@ -1,14 +1,13 @@
 <script>
   import { onMount, createEventDispatcher } from "svelte";
-  import moment from "moment";
   import {
     allJenisKajian,
     allKabupaten,
     allKategoriIlmu,
-    dummyKajians,
+    kajians,
     allJenisStatus,
-  } from "../database/generate";
-  import { kajianStore, filterStore } from "./store.js";
+  } from "src/data/kajianData";
+  import { kajianStore, filterStore } from "../store.js";
 
   const dispatch = createEventDispatcher();
 
@@ -45,7 +44,7 @@
   function applyFilters() {
     filterStore.subscribe((filters) => {
       kajianStore.set(
-        dummyKajians.filter(
+        kajians.filter(
           (kajian) =>
             (!filters.jenisKajian ||
               kajian.jenisKajian === filters.jenisKajian) &&
@@ -62,7 +61,7 @@
   }
 </script>
 
-<div class="flex flex-col gap-4">
+<div class="flex gap-4">
   <select
     bind:value={$filterStore.jenisKajian}
     on:change={handleFilterChange}
@@ -105,58 +104,3 @@
   </select>
 </div>
 
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-  {#each $kajianStore as kajian, index}
-    <div key={index} class="bg-white rounded-lg shadow-md overflow-hidden">
-      <img
-        src={kajian.gambarKajian || "default-image-url"}
-        alt={`Poster Kajian ${kajian.judul}`}
-        class="w-full h-32 sm:h-48 object-cover"
-      />
-      <div class="p-4">
-        <h5 class="text-lg font-bold">{kajian.judul}</h5>
-        <span
-          class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blue-600 bg-blue-200 last:mr-0 mr-1"
-        >
-          {kajian.pemateri.nama}
-        </span>
-        <span
-          class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blue-600 bg-blue-200 last:mr-0 mr-1"
-        >
-          {kajian.statusBiaya}
-        </span>
-        <p class="text-sm text-gray-600">{kajian.tempat}</p>
-        {#if kajian.alamat && kajian.alamat.jalan}
-          <p class="text-sm text-gray-500">{kajian.alamat.kabupaten}</p>
-        {/if}
-        <p class="text-sm">
-          {moment(kajian.hariJadwal).format("dddd, D MMMM YYYY")}
-        </p>
-
-        <a
-          href={kajian.linkGoogleMaps}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="text-blue-500 text-sm hover:underline">View on Map</a
-        >
-        <div class="mt-3">
-          <span
-            class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blue-600 bg-blue-200 last:mr-0 mr-1"
-          >
-            {kajian.jenisKajian}
-          </span>
-          {#if kajian.kategoriIlmu}
-            {#each kajian.kategoriIlmu as kategori, idx}
-              <span
-                key={idx}
-                class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-green-600 bg-green-200 last:mr-0 mr-1"
-              >
-                {kategori}
-              </span>
-            {/each}
-          {/if}
-        </div>
-      </div>
-    </div>
-  {/each}
-</div>
