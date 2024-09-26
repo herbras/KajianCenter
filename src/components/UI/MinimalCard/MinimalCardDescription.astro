@@ -1,0 +1,12 @@
+---
+// MinimalCardDescription.astro
+interface DescriptionProps {
+  class?: string;
+}
+
+const { class: descriptionClassName } = Astro.props as DescriptionProps;
+---
+
+<p class:list={["text-sm text-neutral-500 pb-2 px-1", descriptionClassName]}>
+  <slot />
+</p>

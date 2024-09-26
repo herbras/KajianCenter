@@ -1,8 +1,14 @@
 ---
 const { kajian } = Astro.props;
-import SaveEvent from "@components/SaveEvent.svelte";
-import { formatStartDateTime } from "@utils/dateUtils";
+import Contact from "@components/Nano/Contact.astro";
+import Person from "@components/Nano/Person.astro";
+import Place from "@components/Nano/Place.astro";
+import Share from "@components/Nano/Share.astro";
 import Terdekat from "@components/Nano/Terdekat.astro";
+import Times from "@components/Nano/Times.astro";
+import SaveEvent from "@components/SaveEvent.svelte";
+import TextureCardImage from "@components/UI/TextureCard/TextureCardImage.astro";
+import { formatStartDateTime } from "@utils/dateUtils";
 
 const startDate = formatStartDateTime(kajian.hariJadwal);
 
@@ -17,12 +23,6 @@ let pemateri = {
   foto: kajian.pemateri.foto,
   kontak: kajian.pemateri.kontak,
 };
-import Share from "./Nano/Share.astro";
-import Contact from "./Nano/Contact.astro";
-import Person from "./Nano/Person.astro";
-import Place from "./Nano/Place.astro";
-import Times from "./Nano/Times.astro";
-import TextureCardImage from "./UI/TextureCard/TextureCardImage.astro";
 ---
 
 <div class="flex flex-col w-full pb-6">

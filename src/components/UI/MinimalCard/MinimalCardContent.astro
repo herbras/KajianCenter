@@ -1,0 +1,11 @@
+---
+interface ContentProps {
+  class?: string;
+}
+
+const { class: contentClassName } = Astro.props as ContentProps;
+---
+
+<div class:list={["p-6 pt-0", contentClassName]}>
+  <slot />
+</div>

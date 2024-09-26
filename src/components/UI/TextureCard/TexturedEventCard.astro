@@ -1,0 +1,43 @@
+---
+import TextureCard from "./TextureCard.astro";
+import TextureButton from "../button/TextureButton.astro";
+
+interface Props {
+  date: string;
+  title: string;
+  description: string;
+  ctaText: string;
+  ctaLink: string;
+  backgroundImage: string;
+}
+
+const { date, title, description, ctaText, ctaLink, backgroundImage } =
+  Astro.props;
+---
+
+<TextureCard class="h-full max-h-[480px] sm:max-h-none overflow-hidden">
+  <div
+    class="grid grid-cols-1 sm:grid-cols-2 border-r-24 h-full mx-auto px-4 sm:px-15 py-6 sm:py-12 bg-no-repeat bg-center bg-cover text-[#242424]"
+    style={`background-image: url(${backgroundImage});`}
+  >
+    <div class="col-span-1 flex flex-col justify-center">
+      <div class="h4 font-semibold font-neco mb-2 sm:mb-4">{date}</div>
+      <h2 class="text-2xl sm:text-[40px] font-bold font-pally mb-2 sm:mb-4">
+        {title}
+      </h2>
+      <p class="text-sm sm:text-base events-description font-neco mb-4 sm:mb-6">
+        {description}
+      </p>
+      <div class="w-1/2">
+        <TextureButton
+          variant="primary"
+          size="lg"
+          href={ctaLink}
+          class="inline-block w-full sm:w-auto font-neco"
+        >
+          {ctaText}
+        </TextureButton>
+      </div>
+    </div>
+  </div>
+</TextureCard>

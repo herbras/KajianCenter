@@ -1,0 +1,59 @@
+---
+import { Image } from "astro:assets";
+
+interface Props {
+  src: string | ImageMetadata;
+  alt: string;
+  class?: string;
+  aspectRatio?: "square" | "video" | "wide";
+}
+
+const { src, alt, class: className, aspectRatio = "video" } = Astro.props;
+
+const aspectRatioClass = {
+  square: "aspect-square",
+  video: "aspect-video",
+  wide: "aspect-[21/9]",
+}[aspectRatio];
+---
+
+<div
+  class:list={[
+    "relative overflow-hidden",
+    aspectRatioClass,
+    "rounded-[24px] border border-white/60 dark:border-stone-950/60",
+    "bg-gradient-to-b from-neutral-100 to-white/70 dark:from-neutral-800 dark:to-neutral-900",
+    className,
+  ]}
+>
+  <div class="rounded-[23px] border dark:border-neutral-900/80 border-black/10">
+    <div class="rounded-[22px] border dark:border-neutral-950 border-white/50">
+      <div
+        class="rounded-[21px] border dark:border-neutral-900/70 border-neutral-950/20"
+      >
+        <div
+          class="rounded-[20px] border border-white/50 dark:border-neutral-700/50 overflow-hidden"
+        >
+          {
+            typeof src === "string" ? (
+              <img
+                src={src}
+                alt={alt}
+                class="w-full h-full object-cover"
+                loading="lazy"
+              />
+            ) : (
+              <Image
+                src={src}
+                alt={alt}
+                width={800}
+                height={450}
+                class="w-full h-full object-cover"
+              />
+            )
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

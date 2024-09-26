@@ -1,0 +1,45 @@
+---
+import type { CollectionEntry } from "astro:content";
+import TextureCard from "./TextureCard.astro";
+import TextureCardHeader from "./TextureCardHeader.astro";
+import TextureCardTitle from "./TextureCardTitle.astro";
+import TextureCardDescription from "./TextureCardDescription.astro";
+import TextureCardContent from "./TextureCardContent.astro";
+import TextureCardFooter from "./TextureCardFooter.astro";
+import TextureSeparator from "./TextureSeparator.astro";
+import TextureButton from "../button/TextureButton.astro";
+
+interface Props {
+  post: CollectionEntry<"blog">;
+}
+
+const { post } = Astro.props;
+const { title, description, pubDatetime, tags } = post.data;
+---
+
+<TextureCard class="h-full font-pally">
+  <TextureCardHeader>
+    <TextureCardTitle>{title}</TextureCardTitle>
+    <TextureCardDescription>{description}</TextureCardDescription>
+  </TextureCardHeader>
+  <TextureCardContent>
+    <div class="flex justify-between items-center mb-4">
+      <span class="text-sm text-gray-500 dark:text-gray-400">
+        {new Date(pubDatetime).toLocaleDateString()}
+      </span>
+      <div class="flex flex-wrap gap-2">
+        {
+          tags.map((tag) => (
+            <span class="text-xs bg-emerald-100 text-emerald-800 px-2 py-1 rounded-full">
+              {tag}
+            </span>
+          ))
+        }
+      </div>
+    </div>
+  </TextureCardContent>
+  <TextureSeparator />
+  <TextureCardFooter>
+    <TextureButton variant="primary" size="sm">Read More</TextureButton>
+  </TextureCardFooter>
+</TextureCard>

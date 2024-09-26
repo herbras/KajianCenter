@@ -3,7 +3,7 @@
   "compilerOptions": {
     "strictNullChecks": true,
     "allowJs": true,
-    "baseUrl": ".",
+    "baseUrl": "E:/KajianCenter",
     "paths": {
       "@components/*": [
         "src/components/*"
@@ -20,6 +20,8 @@
       "@utils/*": [
         "src/utils/*"
       ]
-    }
+    },
+    "jsx": "react-jsx",
+    "jsxImportSource": "react"
   }
 }

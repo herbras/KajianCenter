@@ -1,0 +1,76 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { cva, type VariantProps } from "class-variance-authority";
+
+const pillVariants = cva(
+  "transform hover:rotate-6 transition duration-500 ease-in-out group border-2 shadow-md decoration-none text-lg tracking-tight animated-link inline-flex items-center py-2 px-4 rounded-full font-medium cursor-pointer",
+  {
+    variants: {
+      variant: {
+        default:
+          "border-emerald-300 text-emerald-700 bg-gradient-to-r from-emerald-100 to-emerald-200 hover:shadow-lg hover:from-emerald-200 hover:to-emerald-300 dark:from-emerald-800 dark:to-emerald-700 dark:text-emerald-100 dark:hover:from-emerald-700 dark:hover:to-emerald-600",
+        light:
+          "border-emerald-200 text-emerald-600 bg-gradient-to-r from-emerald-50 to-emerald-100 hover:shadow-lg hover:from-emerald-100 hover:to-emerald-200 dark:from-emerald-700 dark:to-emerald-600 dark:text-emerald-50 dark:hover:from-emerald-600 dark:hover:to-emerald-500",
+        dark: "border-emerald-400 text-emerald-800 bg-gradient-to-r from-emerald-200 to-emerald-300 hover:shadow-lg hover:from-emerald-300 hover:to-emerald-400 dark:from-emerald-900 dark:to-emerald-800 dark:text-emerald-200 dark:hover:from-emerald-800 dark:hover:to-emerald-700",
+      },
+      size: {
+        default: "py-2 px-4 text-lg",
+        sm: "py-1 px-3 text-sm",
+        lg: "py-3 px-6 text-xl",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+      size: "default",
+    },
+  }
+);
+
+const dotVariants = cva(
+  "w-2 h-2 rounded-full mr-2 transition duration-500 ease-in-out group-hover:scale-150",
+  {
+    variants: {
+      variant: {
+        default: "bg-emerald-400",
+        light: "bg-emerald-300",
+        dark: "bg-emerald-500",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+    },
+  }
+);
+
+interface Props extends HTMLAttributes<"a">, VariantProps<typeof pillVariants> {
+  href: string;
+  label: string;
+}
+
+const {
+  href,
+  label,
+  variant = "default",
+  size = "default",
+  class: className,
+  ...rest
+} = Astro.props;
+
+const pillClass = pillVariants({ variant, size });
+const dotClass = dotVariants({ variant });
+---
+
+<a
+  href={href}
+  role="link"
+  aria-label={label}
+  class:list={[pillClass, className]}
+  {...rest}
+>
+  <div class={dotClass}></div>
+  <span
+    class="font-medium transition duration-500 ease-in-out group-hover:tracking-wide"
+  >
+    {label}
+  </span>
+</a>

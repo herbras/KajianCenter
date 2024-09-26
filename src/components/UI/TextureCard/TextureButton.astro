@@ -1,0 +1,59 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { cva, type VariantProps } from "class-variance-authority";
+
+const buttonVariants = cva(
+  "relative w-full flex items-center justify-center text-sm transition duration-300 ease-in-out border",
+  {
+    variants: {
+      variant: {
+        primary:
+          "border-black/10 dark:border-black bg-gradient-to-b from-black/70 to-black dark:from-white dark:to-white/80 text-white/90 dark:text-black/80 hover:from-stone-800 hover:to-neutral-800/70 dark:hover:from-stone-200 dark:hover:to-neutral-200 active:from-black active:to-black dark:active:from-stone-300 dark:active:to-neutral-300",
+        accent:
+          "   ",
+        destructive:
+          "border-black/10 dark:border-neutral-950 bg-gradient-to-b from-red-300/90 to-red-500 dark:from-red-300/90 dark:to-red-500 text-white/90 hover:from-red-400/70 hover:to-red-600/70 active:from-red-400/80 active:to-red-600/80",
+        secondary:
+          "border-black/20 bg-white/50 dark:border-neutral-950 dark:bg-neutral-600/50 text-neutral-700 dark:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-700 active:bg-neutral-200 dark:active:bg-neutral-800",
+        minimal:
+          "border-black/20 bg-white/50 dark:border-neutral-950 dark:bg-neutral-600/80 text-neutral-700 dark:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-700 active:bg-neutral-200 dark:active:bg-neutral-800",
+        icon: "border-black/10 dark:border-neutral-950 bg-white/50 dark:bg-neutral-600/50 text-neutral-700 dark:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-700 active:bg-neutral-200 dark:active:bg-neutral-800",
+      },
+      size: {
+        sm: "text-xs px-4 py-1 rounded-[6px]",
+        default: "px-4 py-2 rounded-[12px]",
+        lg: "text-base px-4 py-2 rounded-[12px]",
+        icon: "p-2 rounded-full",
+      },
+    },
+    defaultVariants: {
+      variant: "primary",
+      size: "default",
+    },
+  }
+);
+
+interface Props
+  extends HTMLAttributes<"button" | "a">,
+    VariantProps<typeof buttonVariants> {
+  href?: string;
+}
+
+const {
+  variant = "primary",
+  size = "default",
+  class: className,
+  href,
+  ...rest
+} = Astro.props;
+
+const Element = href ? "a" : "button";
+---
+
+<Element
+  class:list={[buttonVariants({ variant, size }), className]}
+  {...href ? { href } : {}}
+  {...rest}
+>
+  <slot />
+</Element>

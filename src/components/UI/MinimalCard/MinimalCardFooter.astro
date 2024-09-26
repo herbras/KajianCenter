@@ -1,0 +1,11 @@
+---
+// MinimalCardFooter.astro
+interface FooterProps {
+  class?: string;
+}
+
+const { class: footerClassName } = Astro.props as FooterProps;
+---
+<div class:list={["flex items-center p-6 pt-0", footerClassName]}>
+  <slot />
+</div>

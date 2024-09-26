@@ -3,9 +3,16 @@
 
   import { filterStore } from "./store.js";
 
+  let isOpen = false;
+
+  function toggleSidebar() {
+    isOpen = !isOpen;
+  }
+
   const jenisKajianOptions = ["Tematik", "Rutin", "Kitab", "Dauroh"];
   const kategoriIlmuOptions = ["Fiqh", "Aqidah", "Adab", "Tafsir"];
   const jenisStatusOptions = ["Berbayar", "Gratis"];
+
   onMount(() => {
     const params = new URLSearchParams(window.location.search);
     filterStore.set({
@@ -13,7 +20,23 @@
       kategoriIlmu: params.get("kategoriIlmu") || "",
       statusOptions: params.get("status") || "",
     });
-  });
+
+    const handleResize = () => {
+      if (window.innerWidth > 768) {
+        isOpen = true;
+        document.body.classList.add('sidebar-open');
+      } else {
+        isOpen = false;
+        document.body.classList.remove('sidebar-open');
+      }
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };  });
 
 // Fungsi pembantu untuk menggabungkan semua filter menjadi satu string query URL
 function createQueryString() {
@@ -59,9 +82,21 @@ function handleFilterChange() {
     htmx.ajax("GET", url, target);
   }
 </script>
+<div class="relative">
+
+<button
+class="md:hidden fixed bottom-4 right-4 z-50 bg-white p-3 rounded-full shadow-md text-2xl"
+on:click={toggleSidebar}
+  >
+    {#if isOpen}
+      ✕
+    {:else}
+      ☰
+    {/if}
+  </button>
 
 <div
-  class="fixed top-0 left-0 h-screen w-64 flex flex-col justify-between bg-white border-r overflow-y-auto"
+class="fixed top-0 left-0 z-60 h-screen w-64 flex flex-col justify-between bg-white border-r overflow-y-auto transition-transform duration-300 ease-in-out {isOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0"
 >
   <div class="px-4 py-6">
     <span class="grid p-1 place-content-center">
@@ -281,3 +316,18 @@ function handleFilterChange() {
     </a>
   </div>
 </div>
+{#if isOpen}
+<div
+  class="md:hidden fixed inset-0 bg-black bg-opacity-50 z-40"
+  on:click={toggleSidebar}
+></div>
+{/if}
+</div>
+
+<style>
+  @media (min-width: 768px) {
+    .md\:translate-x-0 {
+      transform: translateX(0);
+    }
+  }
+</style>

@@ -1,4 +1,5 @@
 ---
+import { FamilyButtonDemo } from "@components/Button/buttonExample";
 import Card from "@components/Card.astro";
 const isAjaxRequest = Astro.request.headers.get("hx-request");
 
@@ -17,35 +18,7 @@ import BaseLayout from "@layouts/BaseLayout.astro";
         title="Kajian Center"
       >
         <Card />
-        <div class="h-[32rem] relative">
-          <div
-            class="absolute top-1/2 left-1/2 w-7/10"
-            style="transform: translate(-70%, -30%); -webkit-mask-image: url('http://127.0.0.1:5500/dist/images/header-mask_image-1.svg'); mask-image: url('http://127.0.0.1:5500/dist/images/header-mask_image-1.svg'); -webkit-mask-size: 100%; mask-size: 100%; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;"
-          >
-            <img
-              src="http://127.0.0.1:5500/dist/images/hero-1.png"
-              alt="Khatmah: Start Your Journey"
-            />
-          </div>
-          <div
-            class="absolute top-1/2 left-1/2 w-7/10"
-            style="transform: translate(-20%, -120%); -webkit-mask-image: url('http://127.0.0.1:5500/dist/images/header-mask_image-2.svg'); mask-image: url('http://127.0.0.1:5500/dist/images/header-mask_image-2.svg'); -webkit-mask-size: 100%; mask-size: 100%; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;"
-          >
-            <img
-              src="http://127.0.0.1:5500/dist/images/hero-1.png"
-              alt="Khatmah: Start Your Journey"
-            />
-          </div>
-          <div
-            class="absolute top-1/2 left-1/2 w-7/10"
-            style="transform: translate(40%, -45%); -webkit-mask-image: url('http://127.0.0.1:5500/dist/images/header-mask_image-3.svg'); mask-image: url('http://127.0.0.1:5500/dist/images/header-mask_image-3.svg'); -webkit-mask-size: 100%; mask-size: 100%; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;"
-          >
-            <img
-              src="http://127.0.0.1:5500/dist/images/hero-1.png"
-              alt="Khatmah: Start Your Journey"
-            />
-          </div>
-        </div>
+
       </BaseLayout>
     </>
   )

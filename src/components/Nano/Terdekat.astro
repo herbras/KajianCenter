@@ -1,60 +1,77 @@
 ---
-const { lokasi } = Astro.props;
 import { kajians } from "src/data/kajianData";
+import TextureCardContent from "@components/UI/TextureCard/TextureCardContent.astro";
+import TextureCardDescription from "@components/UI/TextureCard/TextureCardDescription.astro";
+import TextureCardHeader from "@components/UI/TextureCard/TextureCardHeader.astro";
+import TextureCardImage from "@components/UI/TextureCard/TextureCardImage.astro";
+import TextureCardTitle from "@components/UI/TextureCard/TextureCardTitle.astro";
+import TextureCardStyled from "@components/UI/TextureCard/TextureCardStyled.astro";
+import TextureButton from "@components/UI/button/TextureButton.astro";
+
+const { lokasi } = Astro.props;
+
 const filteredKajians = kajians
-    .filter((kajian) => kajian.alamat?.kabupaten === lokasi)
-    .slice(0, 4);
+  .filter((kajian) => kajian.alamat?.kabupaten === lokasi)
+  .slice(0, 2); // Limiting to 2 kajians
+
+const defaultImage =
+  "https://pbs.twimg.com/media/GBRTGrpaAAAgmD2?format=jpg&name=large";
 ---
 
-<section>
-    <div class="mx-auto max-w-screen-2xl px-4 pt-12">
-        <header>
-            <h2 class="text-md font-thin text-gray-900 sm:text-3xl">
-                Temukan kekayaan ilmu dan hikmah dalam setiap kajian agama yang
-                tersedia di wilayah Anda.
-            </h2>
-        </header>
-    </div>
+<section class="mx-auto max-w-screen-2xl px-4 py-12">
+  <header class="mb-8">
+    <h2 class="text-md font-thin text-gray-900 sm:text-3xl">
+      Temukan kekayaan ilmu dan hikmah dalam setiap kajian agama yang tersedia
+      di wilayah Anda.
+    </h2>
+  </header>
 
-    {
-        filteredKajians.length > 0 ? (
-            <ul class="mt-8 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-                {kajians
-                    .filter((kajian) => kajian.alamat?.kabupaten == lokasi)
-                    .map((kajian) => (
-                        <a
-                            href="#"
-                            class="block rounded-lg p-4 shadow-sm shadow-gray-600"
-                        >
-                            <img
-                                src={
-                                    kajian.gambarKajian ||
-                                    "https://pbs.twimg.com/media/GBRTGrpaAAAgmD2?format=jpg&name=large"
-                                }
-                                alt={`Poster Kajian ${kajian.judul}`}
-                                class="h-56 w-full rounded-md object-cover"
-                            />
-                            <h3 class="mt-0.5 text-xl text-black">
-                                {kajian.judul}
-                            </h3>
-
-                            <div class="text-sm flex flex-col gap-5">
-                                <p class="m-0 p-0 text-gray-800">
-                                    bersama Ustadz {kajian.pemateri.nama}
-                                </p>
-                                <p class="m-0 p-0 text-gray-700">
-                                    {kajian.tempat}
-                                </p>
-                            </div>
-                        </a>
-                    ))}
-            </ul>
-        ) : (
-            <div class="text-center">
-                <p class="text-lg text-gray-600">
-                    Maaf, kami belum menemukan kajian di sekitar Anda.
-                </p>
-            </div>
-        )
-    }
+  {
+    filteredKajians.length > 0 ? (
+      <ul class="grid m-0 p-0 gap-6 sm:grid-cols-2">
+        {filteredKajians.map((kajian) => (
+          <li>
+            <TextureCardStyled class="h-full overflow-hidden group hover:shadow-lg transition-shadow duration-300">
+              <TextureCardImage
+                src={kajian.gambarKajian || defaultImage}
+                alt={`Poster Kajian ${kajian.judul}`}
+              />
+              <TextureCardHeader>
+                <TextureCardTitle class="text-xl font-semibold text-gray-900 group-hover:text-teal-600 transition-colors duration-300">
+                  {kajian.judul}
+                </TextureCardTitle>
+                <TextureCardDescription>
+                  <p class="text-sm text-gray-700">
+                    Bersama Ustadz {kajian.pemateri.nama}
+                  </p>
+                  <p class="text-sm text-gray-700">{kajian.tempat}</p>
+                </TextureCardDescription>
+              </TextureCardHeader>
+              <TextureCardContent>
+                <TextureButton
+                  autoScroll={true}
+                  href={`/kajian/${kajian.slug}`}
+                  variant="primary"
+                  size="sm"
+                  hxGet={`/kajian/${kajian.slug}`}
+                  hxTarget="#tempat"
+                  hxSwap="innerHTML"
+                  hxPushUrl={`/kajian/${kajian.slug}`}
+                  class="max-w-1/2 mt-4"
+                >
+                  Lihat Detail
+                </TextureButton>
+              </TextureCardContent>
+            </TextureCardStyled>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <TextureCardStyled class="p-8 text-center">
+        <p class="text-lg text-gray-600">
+          Maaf, kami belum menemukan kajian di sekitar Anda.
+        </p>
+      </TextureCardStyled>
+    )
+  }
 </section>

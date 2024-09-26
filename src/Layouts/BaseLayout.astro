@@ -2,6 +2,7 @@
 import SideNav from "@components/SideNav.svelte";
 import { allKabupaten } from "src/data/kajianData";
 import Location from "@components/Location.svelte";
+import { FamilyButtonDemo } from "@components/Button/buttonExample";
 const { title, OgImage, desc } = Astro.props;
 ---
 
@@ -26,16 +27,23 @@ const { title, OgImage, desc } = Astro.props;
       crossorigin="anonymous"></script>
   </head>
   <body class="font-sans m-0 p-0">
-    <main class="flex relative">
-      <SideNav client:visible />
-      <div class="pl-64 pt-5 w-full">
-        <Location allKabupaten={allKabupaten} client:visible />
-
-        <article id="tempat" class="overflow-auto">
-          <slot />
-        </article>
+    <main class="flex flex-col md:flex-row relative">
+      <SideNav client:load />
+      <div class="w-full md:pl-64 transition-all duration-300 ease-in-out p-5">
+          <Location allKabupaten={allKabupaten} client:visible />
+          <article id="tempat" class="overflow-auto">
+            <slot />
+          </article>
       </div>
     </main>
+    
+    <style>
+      @media (max-width: 768px) {
+        .md\:pl-64 {
+          padding-left: 0;
+        }
+      }
+    </style>
     <script>
       document.body.addEventListener("htmx:afterSwap", (event) => {
         const newXTitle = event.detail.xhr.getResponseHeader("X-New-Title");

@@ -1,67 +1,67 @@
 ---
 import { kajians } from "src/data/kajianData";
 import { formatDate, formatDateTime, formatTime } from "@utils/dateUtils";
+import TextureCard from "./UI/TextureCard/TextureCard.astro";
+import TextureCardHeader from "./UI/TextureCard/TextureCardHeader.astro";
+import TextureCardTitle from "./UI/TextureCard/TextureCardTitle.astro";
+import TextureCardDescription from "./UI/TextureCard/TextureCardDescription.astro";
+import TextureCardContent from "./UI/TextureCard/TextureCardContent.astro";
+import TextureCardFooter from "./UI/TextureCard/TextureCardFooter.astro";
+import TextureSeparator from "./UI/TextureCard/TextureSeparator.astro";
+import TextureCardImage from "./UI/TextureCard/TextureCardImage.astro";
+import TexturedPill from "./UI/TextureCard/texturedPill.astro";
 ---
 
-<div class="grid grid-cols-1 max-w-6xl md:grid-cols-2 lg:grid-cols-3 gap-4">
-  {
-    kajians.map((kajian) => (
-      <article class="relative overflow-hidden rounded-lg shadow transition hover:shadow-lg">
-        <img
-          src={
-            kajian.gambarKajian ||
-            "https://pbs.twimg.com/media/GBRTGrpaAAAgmD2?format=jpg&name=large"
-          }
-          alt={`Poster Kajian ${kajian.judul}`}
-          class="absolute inset-0 h-full w-full object-cover"
-        />
-
-        <div class="relative bg-gradient-to-t h-full from-gray-900/50 to-gray-900/25 pt-32 sm:pt-48 lg:pt-64">
-          <div class="p-4 sm:p-6">
-            <label class="flex-inline">
-              <div class="i-fluent-emoji-sun w-5 h-5 text-black" />
-              <span class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blue-600 bg-blue-200 last:mr-0 mr-1">
-                {kajian.jenisKajian}
-              </span>
-
-              {kajian.kategoriIlmu.map((kategori) => (
-                <label class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blue-600 bg-blue-200 last:mr-0 mr-1">
-                  #{kategori}
-                </label>
-              ))}
-            </label>
-
-            <a
-              href={`/${kajian.slug}`}
-              hx-get={`/${kajian.slug}`}
-              hx-target="#tempat"
-              hx-swap="innerHTML"
-              hx-push-url={`/${kajian.slug}`}
-              class="decoration-none"
-            >
-              <h3 class="mt-0.5 text-4xl text-white">{kajian.judul}</h3>
-            </a>
-
+<div class="grid grid-cols-1 max-w-6xl md:grid-cols-2 lg:grid-cols-3 gap-6">
+  {kajians.map((kajian) => (
+    <TextureCard class="h-full">
+      <TextureCardImage
+        src={kajian.gambarKajian || "https://pbs.twimg.com/media/GYAgq3sb0AITy1r?format=jpg&name=large"}
+        alt={`Poster Kajian ${kajian.judul}`}
+      />
+      <TextureCardHeader>
+        <TextureCardTitle>{kajian.judul}</TextureCardTitle>
+        <TextureCardDescription>
+          <div class="flex items-center space-x-1 mb-2">
             <div class="i-fluent-emoji-mosque h-5 w-5" />
-            <div class="text-sm">
-              <p class="m-0 p-0 text-gray-100">{kajian.tempat}</p>
-
-              <p class="m-0 p-0 text-gray-200">
-                {kajian.alamat.kabupaten} , {kajian.alamat.provinsi}
-              </p>
-            </div>
-            <slot name="time" />
-
-            <time
-              class="block text-xs text-white"
-              datetime={formatDateTime(kajian.hariJadwal)}
-            >
-              <span class="text-white">{formatDate(kajian.hariJadwal)}</span>
-              <span class="text-white">@ {formatTime(kajian.hariJadwal)}</span>
-            </time>
+            <span>{kajian.tempat}, {kajian.alamat.kabupaten}, {kajian.alamat.provinsi}</span>
           </div>
+          <time class="text-sm text-neutral-500 dark:text-neutral-400" datetime={formatDateTime(kajian.hariJadwal)}>
+            {formatDate(kajian.hariJadwal)} @ {formatTime(kajian.hariJadwal)}
+          </time>
+        </TextureCardDescription>
+      </TextureCardHeader>
+      <TextureCardContent>
+        <div class="flex flex-wrap gap-2 mb-4">
+          <TexturedPill
+            href={`#${kajian.jenisKajian}`}
+            label={kajian.jenisKajian}
+            variant="light"
+            size="sm"
+          />
+          {kajian.kategoriIlmu.map((kategori) => (
+            <TexturedPill
+              href={`#${kategori}`}
+              label={kategori}
+              variant="light"
+              size="sm"
+            />
+          ))}
         </div>
-      </article>
-    ))
-  }
+      </TextureCardContent>
+      <TextureSeparator />
+      <TextureCardFooter>
+        <a
+          href={`/kajian/${kajian.slug}`}
+          hx-get={`/kajian/${kajian.slug}`}
+          hx-target="#tempat"
+          hx-swap="innerHTML"
+          hx-push-url={`/kajian/${kajian.slug}`}
+          class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background bg-primary text-primary-foreground hover:bg-primary/90 h-10 py-2 px-4 w-full"
+        >
+          Lihat Detail Kajian
+        </a>
+      </TextureCardFooter>
+    </TextureCard>
+  ))}
 </div>
