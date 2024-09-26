@@ -2,8 +2,8 @@
 import Detail from "@components/Detail.astro";
 import BaseLayout from "@layouts/BaseLayout.astro";
 
-import Suprise from "@components/404.astro";
-import { kajians } from "src/data/kajianData";
+import Suprise from "@components/Nothing.astro";
+import { kajians } from "@data/kajianData";
 
 const { kajianSlug } = Astro.params;
 const entry = kajians.find((kajian) => kajian.slug === kajianSlug);

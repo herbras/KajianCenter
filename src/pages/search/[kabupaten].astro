@@ -1,6 +1,6 @@
 ---
 import BaseLayout from "@layouts/BaseLayout.astro";
-import { kajians } from "src/data/kajianData";
+import { kajians } from "@data/kajianData";
 import { formatDate, formatTime, formatDateTime } from "@utils/dateUtils";
 const itemsPerPage = 6;
 const totalItems = kajians.length;
@@ -32,7 +32,7 @@ const filteredAndPaginatedKajians = kajians.filter((kajian, index) => {
     );
 });
 
-import Suprise from "@components/404.astro";
+import Suprise from "@components/Nothing.astro";
 let searchTitle = "Kajian";
 if (kabupatenQueryParam) {
     searchTitle += ` di Kabupaten ${kabupatenQueryParam}`;

@@ -6,7 +6,7 @@
     allKategoriIlmu,
     kajians,
     allJenisStatus,
-  } from "src/data/kajianData";
+  } from "@data/kajianData";
   import { kajianStore, filterStore } from "../store.js";
 
   const dispatch = createEventDispatcher();
