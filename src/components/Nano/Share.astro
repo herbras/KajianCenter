@@ -1,0 +1,58 @@
+<div class="flex  gap-2 p-3">
+  <button
+    id="copyLinkButton"
+    aria-pressed="false"
+    class="border  mx-auto w-fit text-center  justify-between items-center  border-gray-600 inline-flex  py-2 px-3 text-gray-700 bg-gray-100 rounded-full dark:bg-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 font-medium px-2.5 py-0.5 cursor-pointer bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-400 font-medium rounded mb-2"
+  >
+    <div class="i-tabler-copy h-6 w-6 mr-2"></div>
+    <span>Salin Link Yuk</span>
+  </button>
+  <button
+    id="shareButton"
+    class="border  mx-auto w-fit justify-between items-center  text-center  border-gray-600 inline-flex  py-2 px-3 text-gray-700 bg-gray-100 rounded-full dark:bg-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 font-medium px-2.5 py-0.5 cursor-pointer bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-400 font-medium rounded mb-2"
+  >
+    <div class="i-tabler-share-2 h-6 w-6 mr-2"></div>
+    <span>Ajak Temen-Temen</span>
+  </button>
+</div>
+
+<script is:inline>
+  function copyToClipboard(text) {
+    navigator.clipboard
+      .writeText(text)
+      .then(() => {
+        alert("Link udah dicopas, tinggal tempel!");
+      })
+      .catch((err) => {
+        console.error("Waduh, gagal copas nih: ", err);
+      });
+  }
+
+  document
+    .getElementById("copyLinkButton")
+    .addEventListener("click", function () {
+      const currentUrl = window.location.href;
+      copyToClipboard(currentUrl);
+    });
+
+  document.getElementById("shareButton").addEventListener("click", function () {
+    if (navigator.share) {
+      navigator
+        .share({
+          title: "Ikut kajian ini, yuk!",
+          url: window.location.href,
+        })
+        .then(() => {
+          console.log("Makasih udah bantu sebarin!");
+        })
+        .catch(console.error);
+    } else {
+      // Handle kasus dimana Share API tidak didukung
+      const message =
+        "Yah, browser kamu ga support nih buat share langsung. Tapi tenang, link sudah aku copy dan bisa dibagikan.";
+      alert(message);
+      const currentUrl = window.location.href;
+      copyToClipboard(currentUrl);
+    }
+  });
+</script>

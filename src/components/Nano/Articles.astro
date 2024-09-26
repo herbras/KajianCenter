@@ -1,0 +1,34 @@
+---
+const {judul, desription, category, poster} = Astro.props
+---
+
+<article>
+    <h1>{judul}</h1>
+    <div
+        class="border-none p-5 border-r-none border-t-none border-b-none border-l-black border-solid"
+    >
+        <span class="font-bold text-blue">Deskripsi</span>{desription}
+    </div>
+
+    <div>
+        <label
+            class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blue-600 bg-blue-200 last:mr-0 mr-1"
+            >#Category</label
+        >
+    </div>
+    <a
+        href=""
+        title="Go to post"
+        target="_blank"
+        rel="noopener"
+        class="block overflow-hidden mb-10 rounded-2xl cursor-pointer"
+        style="max-width: 25.625rem;"
+        ><div class="relative overflow-hidden">
+            <div style="padding-top: 49%; z-index: -1;"></div><img
+                src={poster}
+                class="absolute block inset-0 w-full h-full m-auto object-cover"
+                alt="Post cover image"
+            />
+        </div></a
+    >
+</article>

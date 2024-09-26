@@ -11,7 +11,7 @@ import {
       presetWebFonts({
         provider: "fontshare",
         fonts: {
-          sans: "Amulya",
+          sans: "Chillax",
           mono: ["Synonym"],
         },
       }),

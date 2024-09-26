@@ -1,6 +1,12 @@
 <script>
     import moment from "moment";
-    import { kajianStore } from "./store.js";
+    import { kajianStore } from "@components/store.js";
+    import { formatDate, formatTime, formatDateTime } from '@utils/dateUtils';
+
+    export let kajians;
+    kajianStore.subscribe((value) => {
+        kajians = value;
+    });
 </script>
 
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -11,13 +17,13 @@
         >
             <img
                 src={kajian.gambarKajian ||
-                    "https://instagram.fsub3-2.fna.fbcdn.net/v/t39.30808-6/404210861_17969198609639553_4960326268749810956_n.jpg?stp=dst-jpg_e15&efg=eyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi4xNDQweDEwNzkuc2RyIn0&_nc_ht=instagram.fsub3-2.fna.fbcdn.net&_nc_cat=109&_nc_ohc=ffx56l6ebNkAX8qH3bz&edm=ACWDqb8AAAAA&ccb=7-5&ig_cache_key=MzI0MDcyMDI1NjA5OTkyMTM5Nw%3D%3D.2-ccb7-5&oh=00_AfAAeEDVs19_sU6o9pApBd5DmXhmAfSX7xTIfLoFjyuz7w&oe=65777141&_nc_sid=ee9879"}
+                    "https://pbs.twimg.com/media/GBRTGrpaAAAgmD2?format=jpg&name=large"}
                 alt={`Poster Kajian ${kajian.judul}`}
                 class="absolute inset-0 h-full w-full object-cover"
             />
 
             <div
-                class="relative bg-gradient-to-t from-gray-900/50 to-gray-900/25 pt-32 sm:pt-48 lg:pt-64"
+                class="relative bg-gradient-to-t h-full from-gray-900/50 to-gray-900/25 pt-32 sm:pt-48 lg:pt-64"
             >
                 <div class="p-4 sm:p-6">
                     <label class="flex-inline">
@@ -55,21 +61,17 @@
                             </p>
                         {/if}
                     </div>
+                    <slot name="time"></slot>
+
                     <time
                         class="block text-xs text-white"
-                        datetime={moment(kajian.hariJadwal).format(
-                            "YYYY-MM-DDTHH:mm:ss",
-                        )}
+                        datetime={formatDateTime(kajian.hariJadwal)}
                     >
                         <span class="text-white"
-                            >{moment(kajian.hariJadwal).format(
-                                "YYYY-MM-DD",
-                            )}</span
+                            >{formatDate(kajian.hariJadwal)}</span
                         >
                         <span class="text-white"
-                            >@ {moment(kajian.hariJadwal).format(
-                                "hh:mm A",
-                            )}</span
+                            >@ {formatTime(kajian.hariJadwal)}</span
                         >
                     </time>
                 </div>

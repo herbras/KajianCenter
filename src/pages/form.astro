@@ -1,0 +1,54 @@
+---
+import Card from "@components/Card.astro";
+
+import BaseLayout from "@layouts/BaseLayout.astro";
+const isAjaxRequest = Astro.request.headers.get("hx-request");
+Astro.response.headers.set("X-New-Title", "Formulir untuk Berkontribusi");
+
+---
+
+{
+    isAjaxRequest ? (
+    <div class="flex flex-col justify-center items-center p-4">
+  <h1 class="mx-auto text-center text-3xl sm:text-5xl font-extrabold text-gray-800">
+    Contributor: <span class="sm:block">Kalian adalah pembangun masa depan</span>
+  </h1>
+  <iframe
+      class="w-full max-w-4xl h-[80vh] shadow-lg rounded-lg mt-8"
+      src="https://docs.google.com/forms/d/e/1FAIpQLSf5B3wv-1vZqDg_SBEouCAZoh-_5APo3UWenLLRn91aR_ptnA/viewform?embedded=true"
+  >
+      Memuat…
+  </iframe>
+  <h3 class="mt-12 mx-auto text-center text-3xl sm:text-4xl font-extrabold text-gray-800 dir:rtl">
+    أَيُّها المُساهِمُ الفَاضِل: <span class="sm:block">جُزِيتَ خَيرًا على عَطائِكَ النَّافِع</span>
+  </h3>
+  <p class="mx-auto text-center text-lg font-extrabold text-gray-800">
+    Semoga Anda diberi balasan yang baik atas kontribusi yang bermanfaat Anda.
+  </p>
+</div>
+
+    ) : (
+        <>
+            <BaseLayout desc="Isi formulir ini untuk Menambahkan data kajian ke dalam database kami." title=" Contributor Kalian adalah pembangun masa depan">
+                <div class="flex flex-col justify-center items-center p-4">
+  <h1 class="mx-auto text-center text-3xl sm:text-5xl font-extrabold text-gray-800">
+    Contributor: <span class="sm:block">Kalian adalah pembangun masa depan</span>
+  </h1>
+  <iframe
+      class="w-full max-w-4xl h-[80vh] shadow-lg rounded-lg mt-8"
+      src="https://docs.google.com/forms/d/e/1FAIpQLSf5B3wv-1vZqDg_SBEouCAZoh-_5APo3UWenLLRn91aR_ptnA/viewform?embedded=true"
+  >
+      Memuat…
+  </iframe>
+  <h3 class="mt-12 mx-auto text-center text-3xl sm:text-4xl font-extrabold text-gray-800 dir:rtl">
+    أَيُّها المُساهِمُ الفَاضِل: <span class="sm:block">جُزِيتَ خَيرًا على عَطائِكَ النَّافِع</span>
+  </h3>
+  <p class="mx-auto text-center text-lg font-extrabold text-gray-800">
+    Semoga Anda diberi balasan yang baik atas kontribusi yang bermanfaat Anda.
+  </p>
+</div>
+
+            </BaseLayout>
+        </>
+    )
+}

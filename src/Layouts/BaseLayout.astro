@@ -1,0 +1,71 @@
+---
+import SideNav from "@components/SideNav.svelte";
+import { allKabupaten } from "src/data/kajianData";
+import Location from "@components/Location.svelte";
+const { title, OgImage, desc } = Astro.props;
+---
+
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/logo.webp" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta property="og:image" content={OgImage} />
+    <meta property="og:url" content="https://kajian.qlm.one/" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={desc} />
+    <meta name="robots" content="index, follow" />
+
+    <meta name="author" content="Ibrahim Nurul Huda" />
+    <meta name="description" content={desc} />
+    <script
+      src="https://unpkg.com/htmx.org@1.9.6"
+      integrity="sha384-FhXw7b6AlE/jyjlZH5iHa/tTe9EpJ1Y55RjcgPbjeWMskSxZt1v9qkxLJWNJaGni"
+      crossorigin="anonymous"></script>
+  </head>
+  <body class="font-sans m-0 p-0">
+    <main class="flex relative">
+      <SideNav client:visible />
+      <div class="pl-64 pt-5 w-full">
+        <Location allKabupaten={allKabupaten} client:visible />
+
+        <article id="tempat" class="overflow-auto">
+          <slot />
+        </article>
+      </div>
+    </main>
+    <script>
+      document.body.addEventListener("htmx:afterSwap", (event) => {
+        const newXTitle = event.detail.xhr.getResponseHeader("X-New-Title");
+        const newXDescription =
+          event.detail.xhr.getResponseHeader("X-New-Description");
+        const newXOgImage =
+          event.detail.xhr.getResponseHeader("X-New-OG-Image");
+
+        if (newXTitle) {
+          document.title = newXTitle;
+          document
+            .querySelector('meta[property="og:title"]')
+            .setAttribute("content", newXTitle);
+        }
+
+        if (newXDescription) {
+          document
+            .querySelector('meta[property="og:description"]')
+            .setAttribute("content", newXDescription);
+          document
+            .querySelector('meta[name="description"]')
+            .setAttribute("content", newXDescription);
+        }
+
+        if (newXOgImage) {
+          document
+            .querySelector('meta[property="og:image"]')
+            .setAttribute("content", newXOgImage);
+        }
+      });
+    </script>
+  </body>
+</html>
